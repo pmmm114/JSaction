@@ -75,11 +75,11 @@ var flag = new animationStop();
 
 			if (_.checkDropdownStyle()) {
 				flag.queue = true;
-				$dropdownBox.slideDown(400, $.proxy(_.fadeInDropdownInner, _)(0));
+				$dropdownBox.slideDown(100, $.proxy(_.fadeInDropdownInner, _)(0));
 			} else {
 				flag.queue = false;
 				$dropdownInner.stop();
-				$dropdownBox.slideUp(200, function () {
+				$dropdownBox.clearQueue().slideUp(200, function () {
 					console.log("init Inner");
 					_.initDropdownInner();
 				});
@@ -100,11 +100,8 @@ var flag = new animationStop();
 			$document.on("click", defDrop.secondDepth.el, function () {
 				console.log("go to second depth");
 				$(defDrop.dropdownBox).animate({
-					margin: "0 0 0 -100%",
-					width: 0
-				}, 1000, function () {
-					$(this).detach();
-				});
+					margin: "0 0 0 -100%"
+				}, 1000);
 
 			})
 
