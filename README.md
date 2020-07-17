@@ -1,9 +1,12 @@
-Need to set CSS and HTML attribute
+__* Need to set CSS and HTML attribute__
 
 scroll-animaiton attribute : ['vertical','horizontal']
 animation-direction attribute : ['BTT', 'TTB', 'RTL', 'LTR']
 
+---
 example)
+
+```html
     <style>
       [opacity-init=visible] {
         opacity: 1;
@@ -20,5 +23,5 @@ example)
       var scroller = new scrollAnimation('[scroll-animation]');
       scroller.init('0.5s', 'ease-in-out', '0.1s', 50);
     </script>
-    
+```
     
