@@ -23,15 +23,33 @@ scrollAnimation.prototype.init = function(transitionTiming, transitionFunc, tran
         });
     }
     _.$notExecutedElementsArray.forEach(function(item) {
-        //방향에 따라 분기처리 예정
-        $(item).css({
-            'transition': 'all '+ transitionTiming + ' ' + transitionFunc + ' ' + transitionDelay,
-            '-webkit-transform' : 'translateY('+transformPosition+'px)',
-            '-moz-transform' : 'translateY('+transformPosition+'px)',
-            '-ms-transform' : 'translateY('+transformPosition+'px)',
-            '-o-transform' : 'translateY('+transformPosition+'px)',
-            'transform' : 'translateY('+transformPosition+'px)',
-        })
+        //방향에 따라 분기처리
+        var $item = null;
+        var animationType = null;
+        var animationDirection = null;
+        $item = $(item);
+        animationType = $item.attr('scroll-animaiton');
+        animationDirection = $item.attr('animation-direction');
+        console.log(animationType, animationDirection);
+        if(animationType === 'horizontal') {
+            $item.css({
+                'transition': 'all '+ transitionTiming + ' ' + transitionFunc + ' ' + transitionDelay,
+                '-webkit-transform' : 'translate('+ (animationDirection === 'LTR' ? -transformPosition : transformPosition) +'px, 0)',
+                '-moz-transform' : 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)',
+                '-ms-transform' : 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)',
+                '-o-transform' : 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)',
+                'transform' : 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)',
+            });
+        } else {
+            $item.css({
+                'transition': 'all '+ transitionTiming + ' ' + transitionFunc + ' ' + transitionDelay,
+                '-webkit-transform' : 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)',
+                '-moz-transform' : 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)',
+                '-ms-transform' : 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)',
+                '-o-transform' : 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)',
+                'transform' : 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)',
+            });
+        }
     })
 };
 
