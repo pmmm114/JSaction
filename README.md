@@ -1,4 +1,5 @@
 __* Need to set CSS and HTML attribute__
+
 __* jQuery baesd__
 
 scroll-animaiton attribute : ['vertical','horizontal']
