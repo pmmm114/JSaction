@@ -1,0 +1,23 @@
+[opacity-init=visible] {
+    opacity: 1;
+}
+[opacity-init=hidden] {
+    opacity: 0;
+}
+
+.block {
+    height: 400px;
+}
+.block.block--one {
+    background-color: black
+}
+.block.block--two {
+    background-color: blueviolet;
+}
+.block.block--three {
+    background-color: burlywood;
+}
+
+.block + .block {
+    margin-top: 60px;
+}

@@ -1,79 +1,57 @@
 //scroll Lib
 function scrollAnimation(selector) {
     var _ = this;
-    _.$notExecutedElementsArray = new Array();
-    _.$executedElementsArray = new Array();
 
-    if( $(selector).length > 0 ) {
-        $(selector).each(function(index, item) {
-            _.$notExecutedElementsArray.push(item);
-        });
-    }
+    _.$elementNodeList = document.querySelectorAll('[scroll-animation]');
 };
 
 scrollAnimation.prototype.init = function(transitionTiming, transitionFunc, transitionDelay, transformPosition) {
     var _ = this;
 
-    if(_.$notExecutedElementsArray.length > 0) {
-        $(window).on('scroll.clientMain', function(e) {
-            if(_.$notExecutedElementsArray.length === 0) {
-                $(window).off('scroll.clientMain');
-            }
-            _.animatingElements();
-        });
-    }
-    _.$notExecutedElementsArray.forEach(function(item) {
-        //방향에 따라 분기처리
-        var $item = null;
-        var animationType = null;
-        var animationDirection = null;
-        $item = $(item);
-        animationType = $item.attr('scroll-animaiton');
-        animationDirection = $item.attr('animation-direction');
-        console.log(animationType, animationDirection);
-        if(animationType === 'horizontal') {
-            $item.css({
-                'transition': 'all '+ transitionTiming + ' ' + transitionFunc + ' ' + transitionDelay,
-                '-webkit-transform' : 'translate('+ (animationDirection === 'LTR' ? -transformPosition : transformPosition) +'px, 0)',
-                '-moz-transform' : 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)',
-                '-ms-transform' : 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)',
-                '-o-transform' : 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)',
-                'transform' : 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)',
-            });
-        } else {
-            $item.css({
-                'transition': 'all '+ transitionTiming + ' ' + transitionFunc + ' ' + transitionDelay,
-                '-webkit-transform' : 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)',
-                '-moz-transform' : 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)',
-                '-ms-transform' : 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)',
-                '-o-transform' : 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)',
-                'transform' : 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)',
-            });
-        }
-    })
-};
-
-scrollAnimation.prototype.animatingElements = function() {
-    var _ = this;
-
-    var showAnimate = function(element) {
-
-        $(element).css({
-            'opacity': 1,
-            '-webkit-transform' : 'translateY('+0+'px)',
-            '-moz-transform' : 'translateY('+0+'px)',
-            '-ms-transform' : 'translateY('+0+'px)',
-            '-o-transform' : 'translateY('+0+'px)',
-            'transform' : 'translateY('+0+'px)',
-        });
+    var IOoptions = {
+        'threshold' : 0.7
     };
 
-    _.$notExecutedElementsArray.forEach(function(item) {
-        if( $(item).offset().top <= ($(window).scrollTop() + $(window).height()) ) {
-            showAnimate(item);
-            _.$notExecutedElementsArray.splice(_.$notExecutedElementsArray.indexOf(item), 1);
-            _.$executedElementsArray.push(item);
+    var IOcallback = function(entries) {
+        console.log(entries[0].target);
+
+        entries[0].target.style.opacity = 1;
+        entries[0].target.style.transform = 'translate(0, 0)';
+        entries[0].target.style.webkitTransform = 'translate(0, 0)';
+        entries[0].target.style.mozTransform = 'translate(0, 0)';
+        entries[0].target.style.msTransform = 'translate(0, 0)';
+        entries[0].target.style.oTransform = 'translate(0, 0)';
+    };
+
+    var observer = new IntersectionObserver(IOcallback, IOoptions);
+
+    _.$elementNodeList.forEach(function(item) {
+        var animationType, animationDirection = null;
+
+        animationType = item.getAttribute('scroll-animation');
+        animationDirection = item.getAttribute('animation-direction');
+
+        //css transition 초기화
+        item.style.transition = 'all';
+        item.style.transitionDelay = transitionDelay;
+        item.style.transitionDuration = transitionTiming;
+        item.style.transitionTimingFunction = transitionFunc;
+
+        if(animationType === 'horizontal') {
+            item.style.transform = 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)';
+            item.style.webkitTransform = 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)';
+            item.style.mozTransform = 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)';
+            item.style.msTransform = 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)';
+            item.style.oTransform = 'translate('+(animationDirection === 'LTR' ? -transformPosition : transformPosition)+'px, 0)';
+        } else {
+            item.style.transform = 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)';
+            item.style.webkitTransform = 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)';
+            item.style.mozTransform = 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)';
+            item.style.msTransform = 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)';
+            item.style.oTransform = 'translate(0, '+(animationDirection === 'TTB' ? -transformPosition : transformPosition)+'px)';
         }
+
+        observer.observe(item);
     });
 };
 
@@ -89,7 +67,7 @@ scrollAnimation.prototype.animatingElements = function() {
             },
             init: function() {
                 var _ = this;
-
+    
                 var scroller = new scrollAnimation(_.attribute.scroll);
                 scroller.init(_.timing, _.transitionFunc, _.transitionDelay, _.scrollTransform);
             },
@@ -103,7 +81,7 @@ scrollAnimation.prototype.animatingElements = function() {
         };
     })();
     
-    $(function() {
+    window.addEventListener("DOMContentLoaded", function() {
         main.init();
     });
 })();
