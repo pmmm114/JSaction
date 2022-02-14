@@ -24,6 +24,8 @@ a {
 }
 
 .content {
+  height: 600px;
+  background-color: aquamarine;
   padding-top: 30px;
 }
 
