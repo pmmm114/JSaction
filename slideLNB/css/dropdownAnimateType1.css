@@ -1,0 +1,41 @@
+ul {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.top-menu {
+  position: fixed;
+  top: 0;
+
+  width: 100%;
+}
+
+.down-root {
+  background-color: #fff;
+}
+
+.dropdown li {
+  opacity: 0;
+  margin: 0 0 0 20px;
+}
+
+.content {
+  height: 600px;
+  background-color: aquamarine;
+  padding-top: 30px;
+}
+
+.dropdown__anchor {
+  display: block;
+  padding: 20px 50px;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  color: #333;
+
+}
